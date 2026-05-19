@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_company_form_markus" model="ir.ui.view">
+        <field name="name">res.company.form.markus</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="markus_integration" string="Integración Markus">
+                    <group name="markus_api_config" string="Configuración API">
+                        <field name="markus_api_host" placeholder="https://api.markuscloud.com"/>
+                        <field name="markus_tenant_id"/>
+                        <field name="markus_api_token" password="True"/>
+                        <field name="markus_resolution_id"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

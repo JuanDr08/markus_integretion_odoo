@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_markus" model="ir.ui.view">
+        <field name="name">account.move.form.markus</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="markus_dian_tab" string="Integración Markus"
+                      invisible="move_type not in ('out_invoice', 'out_refund')">
+                    <group name="markus_status_group">
+                        <group string="Estado DIAN">
+                            <field name="markus_sync_status" widget="badge"
+                                   decoration-info="markus_sync_status == 'draft'"
+                                   decoration-success="markus_sync_status == 'sent'"
+                                   decoration-danger="markus_sync_status == 'error'"/>
+                            <field name="markus_cufe" string="ID Documento Markus"/>
+                            <field name="markus_pdf_url" string="Referencia Markus"/>
+                        </group>
+                        <group string="Errores">
+                            <field name="markus_error_message"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

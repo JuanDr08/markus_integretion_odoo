@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_uom_form_markus" model="ir.ui.view">
+        <field name="name">uom.uom.form.markus</field>
+        <field name="model">uom.uom</field>
+        <field name="inherit_id" ref="uom.product_uom_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="markus_dian_code"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

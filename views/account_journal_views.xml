@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_journal_form_markus" model="ir.ui.view">
+        <field name="name">account.journal.form.markus</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="markus_dian_config" string="DIAN / Markus">
+                    <group name="markus_payment_config" string="Configuración de Pago DIAN">
+                        <field name="markus_payment_means"/>
+                        <field name="markus_payment_means_type"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

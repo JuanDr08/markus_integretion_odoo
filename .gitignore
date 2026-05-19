@@ -1,0 +1,21 @@
+# Local Odoo stack
+docker-compose.yml
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Local editor and agent state
+.claude/
+.atl/
+
+# Virtual environments
+.venv/
+venv/
+
+# OS files
+.DS_Store
+
+docs/
