@@ -8,6 +8,11 @@
             <xpath expr="//notebook" position="inside">
                 <page name="markus_dian_tab" string="Integración Markus"
                       invisible="move_type not in ('out_invoice', 'out_refund')">
+                    <button name="action_retry_markus"
+                            type="object"
+                            string="Reenviar a Markus"
+                            class="btn-primary"
+                            invisible="state != 'posted'"/>
                     <group name="markus_status_group">
                         <group string="Estado DIAN">
                             <field name="markus_sync_status" widget="badge"

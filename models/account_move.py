@@ -113,16 +113,39 @@ class AccountMove(models.Model):
         copy=False,
     )
 
-    def action_post(self) -> dict[str, Any] | bool:
-        res = super().action_post()
-        if res:
-            return res
+    def _post(self, soft: bool = True) -> 'AccountMove':
+        posted = super()._post(soft=soft)
 
-        for invoice in self.filtered(lambda m: m.move_type == 'out_invoice'):
+        for invoice in posted.filtered(
+            lambda m: m.move_type == 'out_invoice' and m.state == 'posted'
+        ):
             payload = invoice._prepare_markus_payload()
             invoice._send_to_markus(payload)
 
-        return False
+        return posted
+
+    def action_retry_markus(self) -> None:
+        self.ensure_one()
+        payload = self._prepare_markus_payload()
+        self._send_to_markus(payload)
+
+    def _resolve_payment_means(self) -> tuple[str, str]:
+        self.ensure_one()
+        pos_orders = self.sudo().pos_order_ids if hasattr(self, 'pos_order_ids') else None
+        if pos_orders:
+            payments = pos_orders.payment_ids.filtered(lambda p: not p.is_change)
+            if payments:
+                pm_journal = payments[:1].payment_method_id.journal_id
+                if pm_journal:
+                    return (
+                        pm_journal.markus_payment_means or 'CASH',
+                        pm_journal.markus_payment_means_type or 'DEBITO',
+                    )
+        journal = self.journal_id
+        return (
+            journal.markus_payment_means or 'CASH',
+            journal.markus_payment_means_type or 'DEBITO',
+        )
 
     def _prepare_markus_payload(self) -> dict[str, Any]:
         self.ensure_one()
@@ -140,9 +163,7 @@ class AccountMove(models.Model):
 
         notes_text = html2plaintext(self.narration).strip() if self.narration else None
 
-        journal = self.journal_id
-        payment_means = journal.markus_payment_means or 'CASH'
-        payment_means_type = journal.markus_payment_means_type or 'DEBITO'
+        payment_means, payment_means_type = self._resolve_payment_means()
 
         payload = {
             "externalId": self.name,
